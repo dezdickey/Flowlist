@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!-- The ground the app is drawn on. It shows for the moment between
+       the launcher tapping and the board painting, so it is the board's
+       own dark rather than a white flash. -->
+  <color name="ground">#FF0D1424</color>
+
+  <!-- A platform theme, so the app carries no support library and no
+       dependencies at all. No title bar: the window is the board and
+       nothing else.
+
+       The status bar is hidden in code and the navigation bar is not —
+       see goFull() in MainActivity for why the second one has to stay.
+       Both colours are set transparent anyway, so that on the older
+       phones where the status bar can reappear it lies over the board
+       rather than cutting a grey strip out of it. -->
+  <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar.Fullscreen">
+    <item name="android:windowBackground">@color/ground</item>
+    <item name="android:colorBackground">@color/ground</item>
+    <item name="android:statusBarColor">@android:color/transparent</item>
+    <!-- A phone with a notch keeps a strip across the top that the window
+         does not reach, and the system paints it black. Tried and failed:
+         statusBarColor does not reach it either, because the window is not
+         there to be coloured. The only way to fill it is cutout mode
+         shortEdges — which lets the board run under the notch, where the
+         top bar would sit behind it. A strip is better than a hidden
+         clock. On a phone with no cutout there is no strip at all. -->
+    <item name="android:navigationBarColor">@android:color/transparent</item>
+    <!-- The window sits inside the bars, so it must sit inside the cutout too:
+         content under a notch is content you cannot read. -->
+    <item name="android:windowLayoutInDisplayCutoutMode">default</item>
+  </style>
+</resources>

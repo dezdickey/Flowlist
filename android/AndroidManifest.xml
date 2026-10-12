@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.flowlist.app">
+
+  <!-- The only address this app ever contacts is the sync database, and
+       only once sync has been set up. Everything else it needs is inside
+       it. No storage permission, no camera, no location, no contacts,
+       nothing else is asked for. -->
+  <uses-permission android:name="android.permission.INTERNET" />
+
+  <!-- allowBackup is off, and deliberately. The board lives in this
+       app's storage, and Android's automatic backup would copy it to the
+       owner's Google Drive without ever asking. The board is meant to be
+       encrypted before it leaves the phone; a backup would take it in
+       the clear. It syncs to a database the owner set up, and nowhere
+       else. -->
+  <application
+      android:label="@string/app_name"
+      android:icon="@mipmap/ic_launcher"
+      android:roundIcon="@mipmap/ic_launcher"
+      android:theme="@style/AppTheme"
+      android:hardwareAccelerated="true"
+      android:usesCleartextTraffic="false"
+      android:supportsRtl="true"
+      android:allowBackup="false"
+      android:fullBackupContent="false">
+
+    <!-- configChanges is not an optimisation. Without it Android tears
+         the activity down and builds it again for a turn of the phone, a
+         change of theme, or the keyboard appearing — reloading the board
+         and losing whatever was half-typed. Handled in the app instead. -->
+    <activity
+        android:name=".MainActivity"
+        android:exported="true"
+        android:screenOrientation="user"
+        android:windowSoftInputMode="adjustResize"
+        android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|keyboard|uiMode|density|fontScale|navigation|layoutDirection">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>

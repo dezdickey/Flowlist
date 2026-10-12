@@ -1,0 +1,22 @@
+<!doctype html><meta charset="utf-8"><title>icon</title>
+<style>
+  html, body { margin: 0; padding: 0; background: transparent; }
+  /* A maskable icon: Android crops it to whatever shape the launcher
+     uses, so the mark keeps well inside the safe circle and the plate
+     runs right to the edges. */
+  .plate {
+    width: 512px; height: 512px;
+    background: radial-gradient(120% 120% at 30% 20%, #1e2a4a 0%, #0d1424 62%, #070b14 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  svg { width: 264px; height: 264px; color: #8fb6ff; }
+</style>
+<div class="plate">
+  <svg viewBox="0 0 64 64" aria-hidden="true">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+      <path d="M32 6v52M9 19l46 26M55 19L9 45"/>
+      <path d="M32 16l-6 6M32 16l6 6M32 48l-6-6M32 48l6-6"/>
+    </g>
+    <circle cx="32" cy="32" r="6" fill="currentColor"/>
+  </svg>
+</div>
