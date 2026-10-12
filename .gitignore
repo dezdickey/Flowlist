@@ -1,0 +1,20 @@
+# Secrets - the APK signing key must survive, but it does not belong in history.
+# android/build-apk.sh makes one on first run. Back these two files up by hand:
+# a different key means uninstall-first on the phone, which wipes its board.
+android/flowlist.keystore
+android/flowlist.keystore.password
+
+# Toolchain (~11 GB: JDK, Android SDK). Fetch it with android/setup-toolchain.sh
+android/toolchain/
+android/out/
+
+# Built output - regenerate with bundle.sh / android/build-apk.sh / tools/mkzip.ps1
+*.apk
+*.apk.idsig
+Flowlist-phone.html
+flowlist-site.zip
+site/index.html
+
+# Test scratch (headless Chrome pages and failure dumps)
+tests/_run/
+tests/after.txt
