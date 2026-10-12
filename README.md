@@ -87,20 +87,44 @@ read — see **Locking it before it leaves**.
 
 1. Make a free project at [console.firebase.google.com](https://console.firebase.google.com) — any name.
 2. **Build → Realtime Database → Create Database.** Any region. Start in **locked mode**.
-3. Open its **Rules** tab and paste this, then Publish:
+3. Open its **Rules** tab and paste the contents of
+   [`firebase-rules.json`](firebase-rules.json), then Publish:
 
    ```json
    {
      "rules": {
        "rooms": {
-         "$room": { ".read": true, ".write": true }
+         ".read": false,
+         ".write": false,
+         "$room": {
+           ".read": true,
+           ".write": "newData.exists()",
+           "rev": { ".validate": "newData.isNumber()" },
+           "at":  { ".validate": "newData.isNumber()" },
+           "enc": {
+             ".validate": "newData.hasChildren(['v', 'iv', 'data'])",
+             "v":    { ".validate": "newData.isNumber()" },
+             "iv":   { ".validate": "newData.isString() && newData.val().length < 64" },
+             "data": { ".validate": "newData.isString()" },
+             "$else": { ".validate": false }
+           },
+           ".validate": "newData.hasChildren(['rev', 'at', 'enc'])",
+           "$else": { ".validate": false }
+         }
        }
      }
    }
    ```
 
+   They do three things worth having. `rooms` itself is unreadable, so nobody
+   can list what rooms exist — a room has to be named to be reached. `.write`
+   requires `newData.exists()`, so a write can add or change a room but never
+   delete one. And the validators accept nothing but `rev`, `at` and the
+   `enc` bundle, so the only thing that can be put in your room is a correctly
+   shaped encrypted board.
+
    (`Appearance → Sync → Copy the rules to paste into Firebase` puts exactly
-   that on your clipboard.)
+   these on your clipboard.)
 4. Copy the database URL from the top of that page — it ends in
    `firebaseio.com`.
 5. In Flowlist: **Appearance → Sync**, switch it on, paste the URL. A **room
@@ -110,10 +134,12 @@ read — see **Locking it before it leaves**.
 
 ### What the room key is
 
-It is the password, and the only one. Those rules let anybody read and write
-any room they can name — so a room nobody can guess is what keeps your board
-yours. That is why the key is generated rather than invented, and why it is
-long. It is the same bargain as the ntfy topic.
+It is the password, and the only one. The rules above constrain the *shape* of
+what can be written and stop the room list being read, but they are not access
+control: anybody who can name your room can still read it and write to it. A
+room nobody can guess is what keeps your board yours. That is why the key is
+generated rather than invented, and why it is long. It is the same bargain as
+the ntfy topic.
 
 The board itself sits on Google's servers, unencrypted. If that is not
 something you want, **Export a backup** is still there and still works.
