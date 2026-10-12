@@ -1,0 +1,32 @@
+# Line endings.
+#
+# Git on this machine has core.autocrlf=true, so by default it rewrites text
+# files to Windows line endings (CRLF) whenever it writes them to disk. For
+# most files that is harmless. For the shell and perl scripts it is not:
+# bash reads "#!/bin/sh\r" as a program name with a stray carriage return and
+# refuses to run the file. That would break bundle.sh, tests/runall.sh and
+# android/build-apk.sh the first time git restored one of them.
+#
+# These rules override autocrlf per file type, so a restore is always safe.
+
+* text=auto
+
+# Run by bash / perl - must stay Unix (LF)
+*.sh  text eol=lf
+*.pl  text eol=lf
+
+# Run by Windows - keep CRLF
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Never touch these
+*.exe      binary
+*.dll      binary
+*.png      binary
+*.ico      binary
+*.woff2    binary
+*.jar      binary
+*.zip      binary
+*.apk      binary
+*.keystore binary
