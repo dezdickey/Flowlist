@@ -1,0 +1,377 @@
+/* ============================================================
+   Flowlist — the menus, dressed for each theme
+
+   Settings and the right-click menus, in the theme's own clothes: its
+   picture across the top of Settings, its colours through the cards,
+   its own shape of menu. All of it hangs on body.menu-skin, which is
+   on unless Settings, Theme, "Themed menus" is switched off - and then
+   nothing here applies and both are plain, in the theme's colours.
+
+   What each theme may set, on #settings (see components.css, SETTINGS):
+     --sk-bg          the sheet itself, under everything
+     --sk-head        the band across the top      --sk-head-art  a picture in it, on the right
+     --sk-nav         the column of sections       --sk-nav-art   a picture at its foot
+     --sk-card / -line / -shadow / -radius         each section's card
+     --sk-title-font  the headings                 --sk-label     their colour
+     --sk-badge / --sk-badge-ic                    the square behind each heading's icon
+     --sk-on / --sk-on-text / --sk-bar             the section you are in, down the side
+     --sk-mark        the mark beside "Settings"   --sk-radius    the sheet's corners
+   and on .ctxmenu, anything, with --mk-stripe for the line across its top.
+
+   --sk-bg ends in a solid colour in every theme: the page of Settings
+   scrolls over it (components.css, .drawer-body), and a page with nothing
+   solid under it is repainted whole on every frame of a scroll.
+
+   Every picture here is still: a drawing, painted once when Settings
+   opens. Nothing in this file moves (see the CPU heat rule), and nothing
+   blurs what is behind it.
+
+   The pictures are SVG written straight into the url(). Colours in them
+   are rgba() so no '#' has to be escaped; the one place a '#' is needed,
+   pointing at a gradient or a mask, it is written %23.
+   ============================================================ */
+
+/* ---------- common to every dressed menu ---------- */
+body.menu-skin .ctxmenu::before {
+  content: ""; position: absolute; left: 14px; right: 14px; top: -1px; height: 2px;
+  border-radius: 2px; background: var(--mk-stripe, transparent); pointer-events: none;
+}
+body.menu-skin .ctx-head { color: var(--mk-head, var(--text-faint)); }
+body.menu-skin .ctx-item:hover { background: var(--mk-hover, var(--hover)); }
+
+
+/* ============================================================ WINTER
+   Frost: cold light from the top corner, snow over far ridges */
+body.menu-skin[data-bg="winter"] #settings {
+  --sk-bg: radial-gradient(900px 380px at 88% -8%, rgba(92,200,255,.13), transparent 62%),
+           radial-gradient(700px 500px at -8% 108%, rgba(183,139,255,.10), transparent 60%), #0d1729;
+  --sk-head: linear-gradient(180deg, rgba(92,200,255,.07), rgba(92,200,255,0));
+  --sk-head-line: rgba(150,215,255,.14);
+  --sk-head-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='72' viewBox='0 0 520 72'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='white' stop-opacity='0'/><stop offset='.6' stop-color='white'/><stop offset='.96' stop-color='white'/><stop offset='1' stop-color='white' stop-opacity='0'/></linearGradient><mask id='m'><rect width='520' height='72' fill='url(%23g)'/></mask></defs><g mask='url(%23m)'><path d='M0 72V58L70 38L110 50L170 24L215 44L262 30L318 50L382 16L430 40L470 26L520 36V72Z' fill='rgba(130,180,240,.13)'/><path d='M382 16L402 26L394 24L388 28L381 24L374 28L363 26ZM170 24L188 32L181 31L175 34L169 31L162 34L152 32Z' fill='rgba(230,245,255,.5)'/><path d='M0 72V64L80 52L150 60L230 46L300 58L370 44L440 56L520 48V72Z' fill='rgba(170,215,255,.15)'/><g fill='rgba(225,242,255,.75)'><circle cx='24' cy='10' r='1.3'/><circle cx='58' cy='30' r='1'/><circle cx='96' cy='14' r='1.6'/><circle cx='132' cy='36' r='1.1'/><circle cx='160' cy='8' r='1.3'/><circle cx='205' cy='20' r='1'/><circle cx='238' cy='8' r='1.7'/><circle cx='276' cy='18' r='1.2'/><circle cx='300' cy='40' r='1'/><circle cx='334' cy='10' r='1.4'/><circle cx='352' cy='32' r='1'/><circle cx='410' cy='8' r='1.2'/><circle cx='446' cy='16' r='1.8'/><circle cx='478' cy='8' r='1.1'/><circle cx='500' cy='20' r='1.4'/><circle cx='460' cy='44' r='1'/><circle cx='412' cy='50' r='1.3'/><circle cx='508' cy='48' r='1'/></g></g></svg>");
+  --sk-nav: rgba(8,15,30,.45);
+  --sk-nav-line: rgba(150,215,255,.1);
+  --sk-nav-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='230' height='120' viewBox='0 0 230 120'><defs><path id='t' d='M0 0L6 10H3L8 18H4L10 28H1V32H-1V28H-10L-4 18H-8L-3 10H-6Z'/></defs><path d='M0 120V92Q50 64 110 86T230 76V120Z' fill='rgba(160,210,255,.07)'/><g fill='rgba(160,210,255,.12)'><use href='%23t' x='40' y='70'/><use href='%23t' x='60' y='78'/><use href='%23t' x='170' y='64'/><use href='%23t' x='188' y='72'/></g><path d='M0 120V104Q70 88 140 100T230 96V120Z' fill='rgba(200,230,255,.1)'/><g fill='rgba(225,242,255,.5)'><circle cx='30' cy='20' r='1.2'/><circle cx='90' cy='40' r='1'/><circle cx='150' cy='14' r='1.4'/><circle cx='200' cy='38' r='1'/><circle cx='120' cy='60' r='1.1'/></g></svg>");
+  --sk-card: linear-gradient(180deg, rgba(160,215,255,.06), rgba(160,215,255,.015)), #0f1a2e;
+  --sk-card-line: rgba(150,215,255,.15);
+  --sk-card-shadow: inset 0 1px 0 rgba(210,238,255,.07), 0 18px 40px -28px rgba(0,0,0,.8);
+  --sk-label: #e3f3ff;
+  --sk-badge: rgba(92,200,255,.14);
+  --sk-badge-ic: #86dbff;
+  --sk-on: linear-gradient(90deg, rgba(92,200,255,.18), rgba(92,200,255,.03));
+  --sk-bar: #5cc8ff;
+  --sk-mark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.7' stroke-linecap='round'><path d='M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.5 4.5L12 6.5l2.5-2M9.5 19.5L12 17.5l2.5 2'/></svg>") center / 18px no-repeat, linear-gradient(135deg, #5cc8ff, #b78bff);
+  --sk-search: rgba(6,12,24,.6);
+  border-color: rgba(150,215,255,.2);
+}
+body.menu-skin[data-bg="winter"] .ctxmenu {
+  --mk-stripe: linear-gradient(90deg, transparent, #5cc8ff, #b78bff, transparent);
+  --mk-hover: rgba(92,200,255,.12); --mk-head: #7fd3ff;
+  background: linear-gradient(180deg, #14243e, #0f1a2e);
+  border-color: rgba(150,215,255,.24);
+  box-shadow: inset 0 1px 0 rgba(210,238,255,.08), 0 22px 60px -18px rgba(0,0,0,.75);
+}
+
+
+/* ============================================================ AMETHYST
+   The app it is named after: flat, grey, quiet, a violet crystal for a
+   mark, and sections that are headings on the page rather than cards */
+body.menu-skin[data-bg="amethyst"] #settings {
+  --sk-bg: #1e1e1e;
+  --sk-head: #262626;
+  --sk-head-line: #363636;
+  --sk-nav: #262626;
+  --sk-nav-line: #363636;
+  --sk-card: transparent;
+  --sk-card-line: transparent;
+  --sk-card-radius: 0;
+  --sk-title-font: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --sk-label: #dadada;
+  --sk-badge: transparent;
+  --sk-badge-ic: #a882ff;
+  --sk-on: #363636;
+  --sk-on-text: #ffffff;
+  --sk-bar: #8b6cef;
+  --sk-mark: linear-gradient(160deg, #c7b2ff, #8b6cef 55%, #5b3fc4);
+  --sk-radius: 10px;
+  --sk-search: #1e1e1e;
+  --sk-rule: #363636;
+  border-color: #3f3f3f;
+}
+body.menu-skin[data-bg="amethyst"] #settings .dh-mark {
+  border-radius: 0; box-shadow: none;
+  clip-path: polygon(50% 0, 92% 30%, 78% 92%, 30% 100%, 8% 44%);
+}
+body.menu-skin[data-bg="amethyst"] #settings .nav-item { height: 32px; border-radius: 5px; font-size: 13px; font-weight: 500; }
+body.menu-skin[data-bg="amethyst"] #settings .nav-item::before { display: none; }
+body.menu-skin[data-bg="amethyst"] #settings .set-group { padding: 6px 2px 14px; border-top: 1px solid #363636; border-radius: 0; }
+body.menu-skin[data-bg="amethyst"] #settings .set-group:first-child { border-top: 0; }
+body.menu-skin[data-bg="amethyst"] #settings .set-label { font-size: 18px; font-weight: 600; margin: 12px 0 8px; }
+body.menu-skin[data-bg="amethyst"] #settings .set-label .ic { width: 20px; height: 20px; padding: 0; }
+body.menu-skin[data-bg="amethyst"] #settings .dh-search,
+body.menu-skin[data-bg="amethyst"] #settings .set-btn,
+body.menu-skin[data-bg="amethyst"] #settings .set-mini,
+body.menu-skin[data-bg="amethyst"] #settings .set-input,
+body.menu-skin[data-bg="amethyst"] #settings .segmented { border-radius: 6px; }
+body.menu-skin[data-bg="amethyst"] .ctxmenu {
+  --mk-hover: rgba(255,255,255,.075); --mk-head: #999;
+  background: #262626; border-color: #363636; border-radius: 8px; padding: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3), 0 16px 40px -8px rgba(0,0,0,.5);
+}
+body.menu-skin[data-bg="amethyst"] .ctx-item { border-radius: 4px; padding: 5px 10px; font-size: 13px; }
+body.menu-skin[data-bg="amethyst"] .ctx-item:hover .ic { color: #a882ff; }
+
+
+/* ============================================================ MIDNIGHT
+   A city after dark: towers along the top with a few windows still lit */
+body.menu-skin[data-bg="midnight"] #settings {
+  --sk-bg: radial-gradient(900px 420px at 90% -12%, rgba(124,141,255,.11), transparent 60%), linear-gradient(180deg, #15151d, #101016), #101016;
+  --sk-head-line: rgba(124,141,255,.14);
+  --sk-head-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='72' viewBox='0 0 520 72'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='white' stop-opacity='0'/><stop offset='.55' stop-color='white'/><stop offset='.96' stop-color='white'/><stop offset='1' stop-color='white' stop-opacity='0'/></linearGradient><mask id='m'><rect width='520' height='72' fill='url(%23g)'/></mask></defs><g mask='url(%23m)'><g fill='white'><circle cx='230' cy='10' r='.9' opacity='.6'/><circle cx='300' cy='16' r='.8' opacity='.5'/><circle cx='360' cy='8' r='1' opacity='.7'/><circle cx='430' cy='14' r='.8' opacity='.5'/><circle cx='508' cy='10' r='.9' opacity='.6'/></g><path d='M478 6a10 10 0 1 0 9 15a8 8 0 1 1 -9 -15z' fill='rgba(236,236,241,.85)'/><path d='M220 72V50H236V42H250V56H262V36H280V48H292V30H300V24H306V30H316V52H330V40H348V58H360V34H378V44H392V26H410V50H424V38H440V56H452V32H470V46H486V28H500V44H520V72Z' fill='rgba(124,141,255,.17)'/><g fill='rgba(255,214,120,.8)'><rect x='266' y='40' width='2' height='2'/><rect x='272' y='46' width='2' height='2'/><rect x='296' y='34' width='2' height='2'/><rect x='364' y='40' width='2' height='2'/><rect x='370' y='46' width='2' height='2'/><rect x='396' y='31' width='2' height='2'/><rect x='402' y='37' width='2' height='2'/><rect x='456' y='36' width='2' height='2'/><rect x='490' y='32' width='2' height='2'/><rect x='494' y='38' width='2' height='2'/></g><g fill='rgba(74,214,192,.8)'><rect x='334' y='44' width='2' height='2'/><rect x='428' y='42' width='2' height='2'/><rect x='476' y='50' width='2' height='2'/></g><path d='M240 72V60H258V52H276V62H290V46H304V58H320V50H336V64H350V54H370V44H384V58H398V48H414V62H430V52H446V60H462V42H476V56H494V50H508V62H520V72Z' fill='rgba(8,8,13,.92)'/></g></svg>");
+  --sk-nav: rgba(8,8,12,.45);
+  --sk-nav-line: rgba(124,141,255,.1);
+  --sk-nav-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='230' height='90' viewBox='0 0 230 90'><path d='M0 90V60H16V48H30V64H44V40H62V56H76V34H84V28H90V34H100V58H116V46H134V66H148V38H166V52H182V30H200V56H214V44H230V90Z' fill='rgba(124,141,255,.09)'/><g fill='rgba(255,214,120,.55)'><rect x='50' y='46' width='2' height='2'/><rect x='88' y='40' width='2' height='2'/><rect x='154' y='44' width='2' height='2'/><rect x='188' y='36' width='2' height='2'/><rect x='192' y='44' width='2' height='2'/></g></svg>");
+  --sk-card: linear-gradient(180deg, rgba(124,141,255,.05), rgba(124,141,255,.01)), #17171f;
+  --sk-card-line: rgba(124,141,255,.14);
+  --sk-card-shadow: 0 18px 40px -28px rgba(0,0,0,.9);
+  --sk-badge: rgba(124,141,255,.15);
+  --sk-badge-ic: #a4afff;
+  --sk-on: linear-gradient(90deg, rgba(124,141,255,.2), rgba(74,214,192,.04));
+  --sk-bar: #7c8dff;
+  --sk-mark: radial-gradient(circle at 68% 32%, #ececf1 0 18%, transparent 20%), linear-gradient(160deg, #7c8dff, #2c2f6b);
+  --sk-search: rgba(0,0,0,.35);
+  border-color: rgba(124,141,255,.2);
+}
+body.menu-skin[data-bg="midnight"] .ctxmenu {
+  --mk-stripe: linear-gradient(90deg, transparent, #7c8dff, #4ad6c0, transparent);
+  --mk-hover: rgba(124,141,255,.12); --mk-head: #9aa6ff;
+  background: linear-gradient(180deg, #1b1b25, #16161e); border-color: rgba(124,141,255,.24);
+}
+
+
+/* ============================================================ PAPER
+   Stationery: a paper plane on a dotted flight, cards like index cards
+   with a ruled margin, headings set like print */
+body.menu-skin[data-bg="paper"] #settings {
+  --sk-bg: #f6f3ec;
+  --sk-head: #fbf9f4;
+  --sk-head-line: rgba(35,33,29,.12);
+  --sk-head-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='72' viewBox='0 0 520 72'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='white' stop-opacity='0'/><stop offset='.5' stop-color='white'/><stop offset='.96' stop-color='white'/><stop offset='1' stop-color='white' stop-opacity='0'/></linearGradient><mask id='m'><rect width='520' height='72' fill='url(%23g)'/></mask></defs><g mask='url(%23m)'><path d='M210 58C260 66 296 40 330 44C362 48 366 66 344 64C322 62 336 38 382 36C412 34 426 34 446 30' fill='none' stroke='rgba(194,104,58,.6)' stroke-width='1.5' stroke-dasharray='4 5' stroke-linecap='round'/><path d='M446 30L496 14L478 44L468 35Z' fill='rgb(255,255,255)' stroke='rgba(35,33,29,.6)' stroke-width='1.3' stroke-linejoin='round'/><path d='M496 14L468 35L466 46L474 39Z' fill='rgb(226,221,210)' stroke='rgba(35,33,29,.6)' stroke-width='1.3' stroke-linejoin='round'/></g></svg>");
+  --sk-nav: #efebe2;
+  --sk-nav-line: rgba(35,33,29,.1);
+  --sk-card: linear-gradient(90deg, transparent 11px, rgba(194,104,58,.3) 11px 12px, transparent 12px),
+             repeating-linear-gradient(180deg, transparent 0 27px, rgba(63,125,107,.075) 27px 28px), #fffefb;
+  --sk-card-line: rgba(35,33,29,.14);
+  --sk-card-shadow: 0 1px 0 rgba(35,33,29,.05), 0 12px 26px -20px rgba(35,33,29,.45);
+  --sk-card-radius: 6px;
+  --sk-title-font: Georgia, "Times New Roman", serif;
+  --sk-label: #23211d;
+  --sk-badge: transparent;
+  --sk-badge-ic: #c2683a;
+  --sk-on: #fffefb;
+  --sk-on-text: #23211d;
+  --sk-bar: #c2683a;
+  --sk-mark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.6' stroke-linejoin='round'><path d='M3 11L21 4L15 20L11.5 14ZM21 4L11.5 14L11 19L14 16'/></svg>") center / 17px no-repeat, #c2683a;
+  --sk-radius: 10px;
+  --sk-search: #ffffff;
+  --sk-rule: rgba(35,33,29,.12);
+  border-color: rgba(35,33,29,.2);
+}
+body.menu-skin[data-bg="paper"] #settings .set-group { padding-left: 26px; }
+body.menu-skin[data-bg="paper"] #settings .set-label .ic { border: 1px solid rgba(194,104,58,.4); border-radius: 50%; }
+body.menu-skin[data-bg="paper"] #settings .nav-item.on { box-shadow: 0 1px 2px rgba(35,33,29,.1), 0 0 0 1px rgba(35,33,29,.08); }
+body.menu-skin[data-bg="paper"] .ctxmenu {
+  --mk-stripe: #c2683a; --mk-hover: rgba(194,104,58,.08); --mk-head: #c2683a;
+  background: repeating-linear-gradient(180deg, transparent 0 31px, rgba(63,125,107,.07) 31px 32px), #fffefb;
+  border-color: rgba(35,33,29,.16); border-radius: 6px;
+  box-shadow: 0 1px 0 rgba(35,33,29,.05), 0 16px 34px -14px rgba(35,33,29,.35);
+}
+body.menu-skin[data-bg="paper"] .ctxmenu::before { left: 0; right: 0; top: 0; height: 2px; border-radius: 6px 6px 0 0; }
+body.menu-skin[data-bg="paper"] .ctx-head { font-family: Georgia, "Times New Roman", serif; }
+
+
+/* ============================================================ SLATE
+   Clean and bright, the way a phone's own settings look: white cards,
+   soft shadows, and a coloured square for every section */
+body.menu-skin[data-bg="slate"] #settings {
+  --sk-bg: #f2f4f7;
+  --sk-head: #fbfcfd;
+  --sk-head-line: rgba(16,24,40,.08);
+  --sk-head-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='72' viewBox='0 0 520 72'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='white' stop-opacity='0'/><stop offset='.55' stop-color='white'/><stop offset='.96' stop-color='white'/><stop offset='1' stop-color='white' stop-opacity='0'/></linearGradient><mask id='m'><rect width='520' height='72' fill='url(%23g)'/></mask></defs><g mask='url(%23m)'><path d='M160 72C220 56 280 60 340 50C400 40 460 48 520 36V72Z' fill='rgba(59,125,224,.08)'/><path d='M240 72C300 60 360 66 420 56C470 48 500 54 520 52V72Z' fill='rgba(18,165,148,.08)'/></g></svg>");
+  --sk-nav: #eceff3;
+  --sk-nav-line: rgba(16,24,40,.07);
+  --sk-card: #ffffff;
+  --sk-card-line: rgba(16,24,40,.06);
+  --sk-card-shadow: 0 1px 2px rgba(16,24,40,.05), 0 4px 14px -6px rgba(16,24,40,.1);
+  --sk-card-radius: 14px;
+  --sk-title-font: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --sk-label: #1c2430;
+  --sk-on: #ffffff;
+  --sk-on-text: #1c2430;
+  --sk-bar: #3b7de0;
+  --sk-mark: linear-gradient(160deg, #6aa2f0, #3b7de0 60%, #2b62bd);
+  --sk-search: #eceff3;
+  border-color: rgba(16,24,40,.1);
+}
+body.menu-skin[data-bg="slate"] #settings [data-group="layout"]    { --gc: #3b7de0; }
+body.menu-skin[data-bg="slate"] #settings [data-group="theme"]     { --gc: #8b5cf6; }
+body.menu-skin[data-bg="slate"] #settings [data-group="ambient"]   { --gc: #f59e0b; }
+body.menu-skin[data-bg="slate"] #settings [data-group="board"]     { --gc: #12a594; }
+body.menu-skin[data-bg="slate"] #settings [data-group="canvas"]    { --gc: #ec4899; }
+body.menu-skin[data-bg="slate"] #settings [data-group="phone"]     { --gc: #22a55a; }
+body.menu-skin[data-bg="slate"] #settings [data-group="sync"]      { --gc: #0ea5e9; }
+body.menu-skin[data-bg="slate"] #settings [data-group="data"]      { --gc: #64748b; }
+body.menu-skin[data-bg="slate"] #settings [data-group="shortcuts"] { --gc: #4f46e5; }
+body.menu-skin[data-bg="slate"] #settings .set-label .ic,
+body.menu-skin[data-bg="slate"] #settings .nav-item .ic {
+  background: var(--gc, #3b7de0); color: #fff; border-radius: 8px; opacity: 1;
+}
+body.menu-skin[data-bg="slate"] #settings .nav-item .ic { width: 24px; height: 24px; padding: 5px; border-radius: 7px; }
+body.menu-skin[data-bg="slate"] #settings .nav-item.on { box-shadow: 0 1px 2px rgba(16,24,40,.06), 0 2px 8px -4px rgba(16,24,40,.12); }
+body.menu-skin[data-bg="slate"] #settings .nav-item.on .ic { color: #fff; }
+body.menu-skin[data-bg="slate"] #settings .nav-item::before { display: none; }
+body.menu-skin[data-bg="slate"] .ctxmenu {
+  --mk-hover: #eef3fb; --mk-head: #6b7686;
+  background: #ffffff; border-color: rgba(16,24,40,.08); border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(16,24,40,.06), 0 20px 44px -14px rgba(16,24,40,.22);
+}
+
+
+/* ============================================================ THE VALLEY
+   Dusk: the sun half behind three ridges, the sky warming to the right */
+body.menu-skin[data-bg="valley"] #settings {
+  --sk-bg: linear-gradient(180deg, #172039, #111830), #111830;
+  --sk-head: linear-gradient(90deg, #172039 0%, #1d2244 42%, #3b2650 78%, #5c3358 100%);
+  --sk-head-line: rgba(244,164,108,.18);
+  --sk-head-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='72' viewBox='0 0 520 72'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='white' stop-opacity='0'/><stop offset='.5' stop-color='white'/><stop offset='.96' stop-color='white'/><stop offset='1' stop-color='white' stop-opacity='0'/></linearGradient><mask id='m'><rect width='520' height='72' fill='url(%23g)'/></mask></defs><g mask='url(%23m)'><g fill='white'><circle cx='250' cy='10' r='.9' opacity='.6'/><circle cx='310' cy='18' r='.8' opacity='.5'/><circle cx='372' cy='8' r='1' opacity='.6'/><circle cx='500' cy='14' r='.8' opacity='.4'/></g><circle cx='432' cy='44' r='30' fill='rgba(244,164,108,.16)'/><circle cx='432' cy='44' r='17' fill='rgba(250,180,125,.97)'/><path d='M160 72V56C200 44 240 50 280 42C320 34 350 46 390 40C430 34 470 30 520 38V72Z' fill='rgba(125,63,92,.62)'/><path d='M200 72V62C250 52 300 60 350 50C400 42 440 54 480 48C500 46 510 46 520 48V72Z' fill='rgba(59,38,80,.95)'/><path d='M240 72V68C290 60 340 66 390 60C440 56 480 64 520 60V72Z' fill='rgba(14,19,40,1)'/></g></svg>");
+  --sk-nav: rgba(10,15,32,.5);
+  --sk-nav-line: rgba(190,205,255,.1);
+  --sk-nav-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='230' height='150' viewBox='0 0 230 150'><circle cx='150' cy='104' r='26' fill='rgba(244,164,108,.1)'/><circle cx='150' cy='104' r='14' fill='rgba(244,164,108,.5)'/><path d='M0 150V110C40 96 80 104 120 94C160 84 200 96 230 90V150Z' fill='rgba(125,63,92,.4)'/><path d='M0 150V124C50 114 100 122 150 112C190 106 214 112 230 110V150Z' fill='rgba(59,38,80,.75)'/><path d='M0 150V138C60 130 120 136 180 130C200 128 220 130 230 130V150Z' fill='rgba(10,14,30,.9)'/></svg>");
+  --sk-card: linear-gradient(180deg, rgba(157,180,234,.05), rgba(157,180,234,.01)), #151d38;
+  --sk-card-line: rgba(190,205,255,.13);
+  --sk-card-shadow: 0 18px 40px -28px rgba(0,0,0,.9);
+  --sk-label: #f1f2fb;
+  --sk-badge: rgba(244,164,108,.15);
+  --sk-badge-ic: #f7b585;
+  --sk-on: linear-gradient(90deg, rgba(244,164,108,.2), rgba(157,180,234,.04));
+  --sk-bar: #f4a46c;
+  --sk-mark: radial-gradient(circle at 50% 62%, #ffe0bf, #f4a46c 48%, #c9665a 100%);
+  --sk-search: rgba(8,12,26,.55);
+  border-color: rgba(244,164,108,.22);
+}
+body.menu-skin[data-bg="valley"] #settings .dh-mark { border-radius: 50%; box-shadow: 0 0 20px -4px rgba(244,164,108,.7); }
+body.menu-skin[data-bg="valley"] .ctxmenu {
+  --mk-stripe: linear-gradient(90deg, transparent, #f4a46c, #9db4ea, transparent);
+  --mk-hover: rgba(244,164,108,.1); --mk-head: #f4a46c;
+  background: linear-gradient(180deg, #1c2446, #161f3a); border-color: rgba(244,164,108,.22);
+}
+
+
+/* ============================================================ DUNES
+   A big low sun over the sand, the dunes darkening toward you */
+body.menu-skin[data-bg="dunes"] #settings {
+  --sk-bg: linear-gradient(180deg, #221420, #1a0f18), #1a0f18;
+  --sk-head: linear-gradient(90deg, #221420 0%, #2c1725 45%, #4a2230 80%, #62303a 100%);
+  --sk-head-line: rgba(242,169,80,.2);
+  --sk-head-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='72' viewBox='0 0 520 72'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='white' stop-opacity='0'/><stop offset='.5' stop-color='white'/><stop offset='.96' stop-color='white'/><stop offset='1' stop-color='white' stop-opacity='0'/></linearGradient><mask id='m'><rect width='520' height='72' fill='url(%23g)'/></mask></defs><g mask='url(%23m)'><circle cx='440' cy='40' r='36' fill='rgba(242,169,80,.14)'/><circle cx='440' cy='40' r='22' fill='rgba(246,180,95,.95)'/><path d='M160 72V60C220 46 280 44 340 54C380 60 400 50 440 46C480 42 500 46 520 50V72Z' fill='rgba(232,129,143,.4)'/><path d='M220 72V66C280 56 330 56 380 62C420 66 460 56 520 58V72Z' fill='rgba(120,48,68,.9)'/><path d='M300 72C350 66 420 66 520 69V72Z' fill='rgba(36,19,32,1)'/></g></svg>");
+  --sk-nav: rgba(16,8,14,.45);
+  --sk-nav-line: rgba(247,200,170,.1);
+  --sk-nav-art: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='230' height='110' viewBox='0 0 230 110'><circle cx='70' cy='70' r='16' fill='rgba(242,169,80,.35)'/><path d='M0 110V84C50 70 90 72 130 80C170 88 200 80 230 76V110Z' fill='rgba(232,129,143,.2)'/><path d='M0 110V98C60 88 120 90 170 96C200 99 220 96 230 94V110Z' fill='rgba(120,48,68,.55)'/></svg>");
+  --sk-card: linear-gradient(180deg, rgba(247,200,170,.04), rgba(247,200,170,.01)), #22141f;
+  --sk-card-line: rgba(247,200,170,.13);
+  --sk-card-shadow: 0 18px 40px -28px rgba(0,0,0,.9);
+  --sk-label: #f9efe8;
+  --sk-badge: rgba(242,169,80,.15);
+  --sk-badge-ic: #f5b766;
+  --sk-on: linear-gradient(90deg, rgba(242,169,80,.2), rgba(232,129,143,.05));
+  --sk-bar: #f2a950;
+  --sk-mark: linear-gradient(180deg, #f6c77a, #f2a950 50%, #e8818f);
+  --sk-search: rgba(10,4,8,.45);
+  border-color: rgba(242,169,80,.22);
+}
+body.menu-skin[data-bg="dunes"] #settings .dh-mark { border-radius: 50% 50% 8px 8px; }
+body.menu-skin[data-bg="dunes"] .ctxmenu {
+  --mk-stripe: linear-gradient(90deg, transparent, #f2a950, #e8818f, transparent);
+  --mk-hover: rgba(242,169,80,.1); --mk-head: #f2a950;
+  background: linear-gradient(180deg, #2c1a28, #261723); border-color: rgba(242,169,80,.24);
+}
+
+
+/* ---------- putting a note off to a day (js/when.js) ----------
+   Lives inside the ordinary context menu, so it inherits its width and
+   padding and only has to lay its two fields out. */
+.when-box {
+  display: flex;
+  gap: 6px;
+  padding: 4px 10px 6px;
+}
+.when-date, .when-time {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--sunken);
+  color: var(--text);
+  font: inherit;
+  font-size: .82rem;
+  padding: 5px 7px;
+}
+.when-time { flex: 0 0 auto; }
+.when-date:focus, .when-time:focus { outline: none; border-color: var(--accent); }
+/* the browser's own calendar button is black on a dark field otherwise */
+.when-date::-webkit-calendar-picker-indicator { filter: invert(.75); cursor: pointer; }
+
+/* ---------- profiles, in Settings (js/themes.js) ---------- */
+.set-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.forget-box {
+  border: 1px solid var(--line-2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  background: var(--sunken);
+}
+.forget-box p { margin: 0 0 8px; font-size: .84rem; line-height: 1.5; color: var(--text-dim); }
+.forget-box p b { color: var(--text); }
+/* the honest part is the part worth reading, so it is the part that stands out */
+.forget-box p.warn {
+  color: var(--text);
+  border-left: 3px solid #ffa94d;
+  padding-left: 9px;
+}
+.forget-prog {
+  margin-top: 8px;
+  font-size: .78rem;
+  color: var(--text-dim);
+  min-height: 1.2em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- opening a sealed board (js/unlock.js) ---------- */
+.unlock {
+  position: fixed; inset: 0; z-index: 400;
+  display: none;
+  align-items: center; justify-content: center;
+  background: var(--bg);
+  padding: 20px;
+}
+.unlock.on { display: flex; }
+.unlock-card {
+  width: min(420px, 100%);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 22px 18px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.unlock-title { margin: 0; font-size: 1.2rem; color: var(--text); }
+.unlock-sub { margin: 4px 0 0; font-size: .84rem; line-height: 1.5; color: var(--text-dim); }
+.unlock-acts { display: flex; flex-direction: column; gap: 8px; }
+.unlock-words { display: flex; gap: 6px; }
+.unlock-words.is-hidden, .unlock-words-show.is-hidden { display: none; }
+.unlock-input { flex: 1 1 auto; min-width: 0; }
+.unlock-say { margin: 0; min-height: 1.2em; font-size: .8rem; color: var(--text-dim); }
+.unlock-leave { align-self: flex-start; }

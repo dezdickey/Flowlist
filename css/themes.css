@@ -1,0 +1,553 @@
+/* ============================================================
+   Flowlist — themes
+   Each theme redefines the token set. Add a new one by copying a
+   block, changing the [data-theme] key, and registering it in
+   js/themes.js -> THEMES.
+   ============================================================ */
+
+:root {
+  --list-w: 296px;
+  --radius: 16px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.16);
+  --shadow:    0 6px 20px -8px rgba(0,0,0,.42);
+  --shadow-lg: 0 22px 60px -18px rgba(0,0,0,.6);
+  --danger: #f4586a;
+}
+
+/* ---------------------------------------------------------- WINTER */
+[data-theme="winter"] {
+  --bg:        #070d1a;
+  --bg-2:      #0b1425;
+  --bar:       rgba(10,18,34,.86);
+  --panel:     #0a1222;
+  --card:      #0e1729;
+  --note:      #121d33;
+  --note-hi:   #16233c;
+  --sunken:    #0a1120;
+  --pop:       #101b30;
+  --text:      #e8f1ff;
+  --text-dim:  #8ea6c8;
+  --text-faint:#5b7195;
+  --line:      rgba(126,170,225,.14);
+  --line-2:    rgba(126,170,225,.28);
+  --hover:     rgba(126,170,225,.10);
+  --accent:      #5cc8ff;
+  --accent-2:    #b78bff;
+  --accent-soft: rgba(92,200,255,.14);
+  --accent-glow: rgba(92,200,255,.45);
+  --on-accent:   #04121e;
+  --scroll:    rgba(126,170,225,.24);
+  --scroll-hi: rgba(126,170,225,.45);
+  --drop-tint: rgba(92,200,255,.06);
+}
+
+/* ---------------------------------------------------------- MIDNIGHT */
+[data-theme="midnight"] {
+  --bg:        #0b0b0f;
+  --bg-2:      #121218;
+  --bar:       rgba(16,16,22,.88);
+  --panel:     #0f0f15;
+  --card:      #14141c;
+  --note:      #191922;
+  --note-hi:   #1f1f2b;
+  --sunken:    #101017;
+  --pop:       #17171f;
+  --text:      #ececf1;
+  --text-dim:  #9a9aab;
+  --text-faint:#66667a;
+  --line:      rgba(255,255,255,.09);
+  --line-2:    rgba(255,255,255,.18);
+  --hover:     rgba(255,255,255,.06);
+  --accent:      #7c8dff;
+  --accent-2:    #4ad6c0;
+  --accent-soft: rgba(124,141,255,.14);
+  --accent-glow: rgba(124,141,255,.4);
+  --on-accent:   #0b0b12;
+  --scroll:    rgba(255,255,255,.15);
+  --scroll-hi: rgba(255,255,255,.3);
+  --drop-tint: rgba(124,141,255,.06);
+}
+
+/* ---------------------------------------------------------- PAPER (light) */
+[data-theme="paper"] {
+  --bg:        #f4f2ee;
+  --bg-2:      #eae7e1;
+  --bar:       rgba(252,251,249,.9);
+  --panel:     #fbfaf8;
+  --card:      #ffffff;
+  --note:      #fbfaf7;
+  --note-hi:   #f4f1ec;
+  --sunken:    #f2efe9;
+  --pop:       #ffffff;
+  --text:      #23211d;
+  --text-dim:  #6d675e;
+  --text-faint:#a09889;
+  --line:      rgba(60,52,40,.12);
+  --line-2:    rgba(60,52,40,.24);
+  --hover:     rgba(60,52,40,.06);
+  --accent:      #c2683a;
+  --accent-2:    #3f7d6b;
+  --accent-soft: rgba(194,104,58,.12);
+  --accent-glow: rgba(194,104,58,.32);
+  --on-accent:   #fffaf6;
+  --scroll:    rgba(60,52,40,.2);
+  --scroll-hi: rgba(60,52,40,.35);
+  --drop-tint: rgba(194,104,58,.05);
+  --shadow:    0 6px 20px -10px rgba(60,50,35,.3);
+  --shadow-lg: 0 22px 60px -20px rgba(60,50,35,.35);
+}
+
+/* ---------------------------------------------------------- SLATE (light) */
+[data-theme="slate"] {
+  --bg:        #eef1f5;
+  --bg-2:      #e3e8ef;
+  --bar:       rgba(249,250,252,.92);
+  --panel:     #f7f9fb;
+  --card:      #ffffff;
+  --note:      #f8fafc;
+  --note-hi:   #eef2f7;
+  --sunken:    #eff3f7;
+  --pop:       #ffffff;
+  --text:      #1c2430;
+  --text-dim:  #5f6c7d;
+  --text-faint:#94a2b3;
+  --line:      rgba(30,45,65,.11);
+  --line-2:    rgba(30,45,65,.2);
+  --hover:     rgba(30,45,65,.05);
+  --accent:      #3b7de0;
+  --accent-2:    #12a594;
+  --accent-soft: rgba(59,125,224,.1);
+  --accent-glow: rgba(59,125,224,.3);
+  --on-accent:   #ffffff;
+  --scroll:    rgba(30,45,65,.18);
+  --scroll-hi: rgba(30,45,65,.32);
+  --drop-tint: rgba(59,125,224,.05);
+  --shadow:    0 6px 20px -10px rgba(20,35,55,.22);
+  --shadow-lg: 0 22px 60px -20px rgba(20,35,55,.28);
+}
+
+/* ---------------------------------------------------------- AMETHYST */
+[data-theme="amethyst"] {
+  --bg:        #1e1e1e;
+  --bg-2:      #262626;
+  --bar:       rgba(30,30,30,.94);
+  --panel:     #161616;
+  --card:      #242424;
+  --note:      #2a2a2a;
+  --note-hi:   #313131;
+  --sunken:    #1a1a1a;
+  --pop:       #2a2a2a;
+  --text:      #dadada;
+  --text-dim:  #b3b3b3;
+  --text-faint:#707070;
+  --line:      rgba(255,255,255,.10);
+  --line-2:    rgba(255,255,255,.19);
+  --hover:     rgba(255,255,255,.055);
+  --accent:      #8b6cef;
+  --accent-2:    #a882ff;
+  --accent-soft: rgba(139,108,239,.17);
+  --accent-glow: rgba(139,108,239,.5);
+  --on-accent:   #ffffff;
+  --scroll:    rgba(255,255,255,.16);
+  --scroll-hi: rgba(255,255,255,.3);
+  --drop-tint: rgba(139,108,239,.07);
+  --radius: 8px;
+}
+/* the app is flat and square-ish; softer corners only come back with Polish */
+[data-theme="amethyst"] .list,
+[data-theme="amethyst"] .tray,
+[data-theme="amethyst"] .ctxmenu { border-radius: 8px; }
+[data-theme="amethyst"] .note,
+[data-theme="amethyst"] .widget,
+[data-theme="amethyst"] .cat,
+[data-theme="amethyst"] .today-item { border-radius: 6px; }
+[data-theme="amethyst"] .list-title {
+  background: none; border-color: transparent; padding-left: 0;
+  font-weight: 600;
+}
+/* a faceted stone in place of the round brand dot */
+[data-theme="amethyst"] .brand-dot {
+  width: 14px; height: 14px; border-radius: 2px;
+  clip-path: polygon(50% 0%, 100% 35%, 81% 100%, 19% 100%, 0% 35%);
+  background: linear-gradient(150deg, #b39bff 0%, #7d5fe0 55%, #4b3396 100%);
+  box-shadow: none;
+}
+
+/* ============================================================
+   THEME BACKDROPS
+   ============================================================ */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  transition: opacity .6s ease, background .6s ease;
+}
+[data-theme="winter"] body::before,
+body[data-bg="winter"]::before {
+  background:
+    radial-gradient(1100px 620px at 12% -8%, rgba(92,200,255,.16), transparent 62%),
+    radial-gradient(900px 560px at 92% 4%, rgba(183,139,255,.13), transparent 60%),
+    linear-gradient(180deg, transparent 55%, rgba(120,180,240,.07) 100%);
+}
+body[data-bg="midnight"]::before {
+  background: radial-gradient(1000px 560px at 50% -12%, rgba(124,141,255,.12), transparent 62%);
+}
+body[data-bg="paper"]::before {
+  background: radial-gradient(1000px 600px at 50% -10%, rgba(194,104,58,.07), transparent 62%);
+}
+body[data-bg="slate"]::before {
+  background: radial-gradient(1000px 600px at 50% -10%, rgba(59,125,224,.08), transparent 62%);
+}
+
+/* ============================================================
+   AMETHYST — flat by default; "Polish" adds the depth
+   ============================================================ */
+body[data-bg="amethyst"]::before { background: none; }
+
+body.polish[data-bg="amethyst"]::before {
+  background:
+    radial-gradient(940px 540px at 16% -12%, rgba(139,108,239,.15), transparent 60%),
+    radial-gradient(780px 470px at 88% 4%, rgba(168,130,255,.10), transparent 58%),
+    linear-gradient(180deg, transparent 62%, rgba(139,108,239,.05) 100%);
+}
+body.polish[data-bg="amethyst"] .list {
+  background: linear-gradient(180deg, #272727 0%, #212121 100%);
+  box-shadow: 0 12px 32px -18px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.035);
+}
+body.polish[data-bg="amethyst"] .list-head::before { box-shadow: 0 0 16px -2px var(--c); }
+body.polish[data-bg="amethyst"] .list-title {
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+  border-color: color-mix(in srgb, var(--c) 40%, transparent);
+  padding-left: 8px;
+}
+body.polish[data-bg="amethyst"] .note {
+  background: linear-gradient(180deg, #2c2c2c, #282828);
+}
+body.polish[data-bg="amethyst"] .note:hover { border-color: rgba(139,108,239,.36); }
+body.polish[data-bg="amethyst"] .cat-swatch,
+body.polish[data-bg="amethyst"] .preset-swatch { box-shadow: 0 0 12px -2px var(--c); }
+body.polish[data-bg="amethyst"] .rail-btn.on,
+body.polish[data-bg="amethyst"] .rail-btn.view-on,
+body.polish[data-bg="amethyst"] .icon-btn.on,
+body.polish[data-bg="amethyst"] .ctool.on { box-shadow: 0 0 15px -5px var(--accent-glow); }
+body.polish[data-bg="amethyst"] .tag { box-shadow: 0 0 12px -6px var(--accent-glow); }
+body.polish[data-bg="amethyst"] .widget {
+  background: linear-gradient(180deg, #272727, #222222);
+}
+/* The stone catches the light — but as a still glow, not a pulse.
+   This used to animate filter: brightness() on the dot, forever. Animating a
+   filter repaints the element every frame, and the dot lives in the top bar,
+   which is the most expensive surface on the page (it carries a backdrop
+   blur). One 13px decoration was enough to keep the whole renderer awake at
+   60fps for as long as the tab was open. */
+body.polish[data-bg="amethyst"] .brand-dot {
+  box-shadow: 0 0 16px rgba(139,108,239,.55);
+}
+body.polish[data-bg="amethyst"] .splash-mark { filter: drop-shadow(0 0 22px var(--accent-glow)); }
+
+
+/* ============================================================
+   WINTER SCENE — drift, snowman, cat
+   ============================================================ */
+.snow-drift {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 84px;
+  background:
+    radial-gradient(58% 96% at 8% 108%,  #ffffff 0 60%, transparent 61%),
+    radial-gradient(46% 88% at 30% 116%, #f3f9ff 0 60%, transparent 61%),
+    radial-gradient(60% 100% at 56% 112%,#ffffff 0 60%, transparent 61%),
+    radial-gradient(50% 92% at 82% 118%, #f0f7ff 0 60%, transparent 61%),
+    linear-gradient(180deg, transparent 42%, rgba(255,255,255,.94) 74%);
+  filter: blur(.4px);
+  opacity: .9;
+  animation: drift-in 1.1s cubic-bezier(.2,.9,.25,1) both;
+}
+@keyframes drift-in { from { transform: translateY(70px); opacity: 0; } to { transform: none; opacity: .9; } }
+
+/* --- snowman --- */
+.snowman {
+  position: absolute; left: 34px; bottom: 40px;
+  width: 76px; height: 96px;
+  animation: drift-in 1.2s .15s cubic-bezier(.2,.9,.25,1) both;
+  transform-origin: 50% 100%;
+}
+.snowman .sm-sway { animation: sm-sway 5.2s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes sm-sway { 0%,100% { transform: rotate(-1.4deg);} 50% { transform: rotate(1.4deg);} }
+
+/* --- cat --- */
+.cat-walk {
+  position: absolute; bottom: 46px; left: 0;
+  width: 62px; height: 40px;
+  animation: cat-path 46s linear infinite;
+}
+@keyframes cat-path {
+  0%   { transform: translateX(10vw) scaleX(1); }
+  46%  { transform: translateX(78vw) scaleX(1); }
+  50%  { transform: translateX(78vw) scaleX(-1); }
+  96%  { transform: translateX(10vw) scaleX(-1); }
+  100% { transform: translateX(10vw) scaleX(1); }
+}
+.cat-body { animation: cat-bob .5s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+@keyframes cat-bob { from { transform: translateY(0); } to { transform: translateY(-1.6px); } }
+.cat-leg-a { animation: leg-a .5s ease-in-out infinite alternate; transform-origin: 50% 0; }
+.cat-leg-b { animation: leg-a .5s ease-in-out infinite alternate-reverse; transform-origin: 50% 0; }
+@keyframes leg-a { from { transform: rotate(-16deg);} to { transform: rotate(16deg);} }
+.cat-tail { animation: tail 1.5s ease-in-out infinite alternate; transform-origin: 100% 100%; }
+@keyframes tail { from { transform: rotate(-9deg);} to { transform: rotate(16deg);} }
+
+/* ---- when it is being driven by JS instead of the fixed patrol ---- */
+.cat-walk.live { animation: none; will-change: transform; }
+/* standing still: stop the legs, keep the tail going */
+.cat-walk.live:not(.walking) .cat-leg-a,
+.cat-walk.live:not(.walking) .cat-leg-b,
+.cat-walk.live:not(.walking) .cat-body { animation-play-state: paused; }
+/* batting at the cursor */
+.cat-walk.pawing .cat-leg-a {
+  animation: cat-paw .42s ease-in-out infinite !important;
+  animation-play-state: running !important;
+}
+@keyframes cat-paw {
+  0%, 100% { transform: rotate(0deg); }
+  45%      { transform: rotate(-62deg); }
+}
+.cat-walk.pawing .cat-tail { animation-duration: .5s; }
+
+
+/* ============================================================
+   POLISH OFF
+   Every theme keeps its colours but loses the depth: no backdrop
+   wash, no coloured glow, flat surfaces. Floating things (menus,
+   the drawer, the tray) keep their shadows — those are structural,
+   not decoration, and without them they stop reading as on top.
+   ============================================================ */
+body:not(.polish)[data-bg]::before { display: none; }
+
+body:not(.polish) .list,
+body:not(.polish) .widget,
+body:not(.polish) .note,
+body:not(.polish) .today-item,
+body:not(.polish) .cnode {
+  background-image: none;
+  box-shadow: none;
+}
+body:not(.polish) .list { border-color: var(--line-2); }
+body:not(.polish) .list-head { background: none; }
+
+/* the coloured spine stays — it is how you tell columns apart — but stops glowing */
+body:not(.polish) .list-head::before,
+body:not(.polish) .cat-swatch,
+body:not(.polish) .preset-swatch,
+body:not(.polish) .cn-dot,
+body:not(.polish) .today-pip,
+body:not(.polish) .band,
+body:not(.polish) .tag {
+  box-shadow: none;
+}
+body:not(.polish) .brand-dot {
+  box-shadow: none;
+  animation: none;
+}
+body:not(.polish) .rail-btn.on,
+body:not(.polish) .rail-btn.view-on,
+body:not(.polish) .icon-btn.on,
+body:not(.polish) .ctool.on,
+body:not(.polish) .brand-name,
+body:not(.polish) .splash-name {
+  box-shadow: none;
+  text-shadow: none;
+}
+body:not(.polish) .splash-mark { filter: none; }
+body:not(.polish) .splash-mark { animation-name: splash-spin; }
+
+
+/* ============================================================
+   SCENERY, HELD STILL
+
+   Everything is drawn exactly as it always is, and then nothing in it
+   moves: no swaying, no twinkling, no walk. `animation: none` rather
+   than a pause, so the entrance animations resolve to their finished
+   state instead of freezing on their first frame — and will-change is
+   dropped so the browser can fold the layers back into the page
+   instead of keeping them on the GPU for a motion that never comes.
+   ============================================================ */
+#fx-scene.still,
+#fx-scene.still * {
+  animation: none !important;
+  will-change: auto !important;
+}
+/* the cat is placed by its walk, so give it somewhere to stand */
+#fx-scene.still .cat-walk { transform: translateX(18vw); }
+
+/* ============================================================
+   A SCENE FOR THE REST OF THE THEMES
+
+   Every looping animation below moves transform or opacity and
+   nothing else — see the note by #fx-scene.still. Blurs and shadows
+   are set once and never animated.
+   ============================================================ */
+
+/* ---------- Midnight: a city with its lights on ---------- */
+.mn-moon {
+  position: absolute; right: 12%; top: 12%;
+  width: 74px; height: 74px; border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #f4f6ff 0 58%, #d7ddf5 60%, #c3cbe8 100%);
+  box-shadow: 0 0 60px 14px rgba(124,141,255,.2);
+  opacity: .9;
+}
+.mn-city { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; }
+.mn-city svg { display: block; width: 100%; height: 100%; }
+.mn-city path { fill: #05060d; }
+.mn-win {
+  position: absolute; width: 3px; height: 4px; border-radius: .5px;
+  background: #ffd98a;
+  animation: mn-lit 6s ease-in-out infinite;
+}
+@keyframes mn-lit { 0%, 100% { opacity: .2; } 45% { opacity: .95; } }
+
+/* ---------- Amethyst: the graph, turning slowly ---------- */
+.ob-graph {
+  position: absolute; right: 5%; bottom: 9%;
+  width: min(44vw, 460px); height: min(44vw, 460px);
+  opacity: .42;
+  animation: ob-turn 120s linear infinite;
+}
+.ob-graph svg { display: block; width: 100%; height: 100%; }
+.ob-graph line { stroke: var(--accent); stroke-width: .35; opacity: .5; }
+.ob-node {
+  position: absolute; border-radius: 50%;
+  background: var(--accent);
+  animation: ob-breathe 5.5s ease-in-out infinite;
+}
+@keyframes ob-turn { to { transform: rotate(360deg); } }
+@keyframes ob-breathe { 0%, 100% { transform: scale(1); opacity: .7; } 50% { transform: scale(1.22); opacity: 1; } }
+
+/* ---------- Slate: fog moving across a ridge ---------- */
+.sl-ridge { position: absolute; left: 0; right: 0; bottom: 0; }
+.sl-ridge svg { display: block; width: 100%; height: 100%; }
+.sl-far  { height: 34%; }
+.sl-far  path { fill: rgba(59,125,224,.10); }
+.sl-near { height: 24%; }
+.sl-near path { fill: rgba(40,58,86,.14); }
+.sl-fog {
+  position: absolute; left: -40%; width: 180%; height: 13%;
+  background: radial-gradient(50% 58% at 50% 50%, rgba(255,255,255,.75), transparent 70%);
+  filter: blur(10px);
+  animation: sl-drift 60s ease-in-out infinite alternate;
+}
+@keyframes sl-drift { from { transform: translateX(-11%); } to { transform: translateX(11%); } }
+
+/* ---------- Paper: a plane, going somewhere ---------- */
+.pp-cloud {
+  position: absolute; left: 6%;
+  width: 210px; height: 54px; border-radius: 40px;
+  background: radial-gradient(60% 100% at 30% 70%, rgba(63,125,107,.16), transparent 70%),
+              radial-gradient(52% 100% at 68% 76%, rgba(63,125,107,.14), transparent 70%);
+  animation: pp-drift 150s ease-in-out infinite alternate;
+}
+.pp-sm { width: 140px; height: 38px; }
+.pp-plane {
+  position: absolute; top: 22%; left: 0;
+  width: 40px; height: 26px;
+  /* a negative delay so it is already in the air when the page opens */
+  animation: pp-fly 78s linear infinite -26s;
+}
+.pp-plane svg { display: block; width: 100%; height: 100%; }
+.pp-plane path { fill: rgba(194,104,58,.5); }
+.pp-plane .pp-fold { stroke: rgba(194,104,58,.7); stroke-width: 1.2; fill: none; }
+@keyframes pp-drift { from { transform: translateX(-5vw); } to { transform: translateX(5vw); } }
+@keyframes pp-fly {
+  0%   { transform: translate(-14vw, 0) rotate(-7deg); }
+  50%  { transform: translate(46vw, -5vh) rotate(3deg); }
+  100% { transform: translate(112vw, 3vh) rotate(-5deg); }
+}
+
+/* ============================================================
+   LANDSCAPES — The Valley and Dunes
+
+   The password screen's pictures behind the board (see buildLandscape in
+   js/themes.js). Each theme below is the ordinary set of colours — solid,
+   so anything that has to be solid stays solid — plus four glass
+   colours, which body.landscape lays over the columns and side panels
+   while Polish is on, so the picture reads through the board.
+
+   WHY GLASS AND NOT BLUR
+
+   Frosted glass would be backdrop-filter, and a backdrop-filter over a
+   picture that moves has to blur it again on every frame the picture
+   changes — which, with a sky that turns and fog that drifts, is every
+   frame. Plain translucency costs nothing to keep. These pictures are
+   big flat shapes with no fine detail, which is exactly what lets text
+   stay easy to read through glass that is only tinted.
+
+   WHAT STAYS SOLID
+
+   Menus, the settings drawer, and on a phone the panels — which there
+   are sheets laid over the board, and would show the notes underneath
+   through them. Notes are nearly solid everywhere.
+   ============================================================ */
+
+/* ---------- the Valley ---------- */
+[data-theme="valley"] {
+  --bg: #0a1020; --bg-2: #0f1830; --bar: rgba(12,17,36,.86);
+  --panel: #0e1529; --card: #121a33; --note: #1c2440; --note-hi: #232d4f;
+  --sunken: #0c1224; --pop: #161f3a;
+  --text: #eef0fa; --text-dim: #a8aecb; --text-faint: #737c9b;
+  --line: rgba(190,205,255,.12); --line-2: rgba(190,205,255,.23); --hover: rgba(190,205,255,.07);
+  --accent: #f4a46c; --accent-2: #9db4ea;
+  --accent-soft: rgba(244,164,108,.15); --accent-glow: rgba(244,164,108,.45);
+  --on-accent: #1a0f08;
+  --scroll: rgba(190,205,255,.18); --scroll-hi: rgba(190,205,255,.34);
+  --drop-tint: rgba(244,164,108,.07);
+  --glass-board: rgba(10,16,32,.34); --glass-card: rgba(13,19,39,.46); --glass-side: rgba(10,14,30,.74);
+  --glass-note: rgba(27,35,64,.86); --glass-note-hi: rgba(35,45,80,.92);
+}
+body[data-bg="valley"]::before {
+  background: linear-gradient(#161832 0%, #3b2650 36%, #7d3f5c 62%, #0a1020 100%);
+}
+
+/* ---------- Dunes ---------- */
+[data-theme="dunes"] {
+  --bg: #150c14; --bg-2: #1c1019; --bar: rgba(22,12,20,.86);
+  --panel: #1a0f18; --card: #20131e; --note: #2c1b29; --note-hi: #362233;
+  --sunken: #170d15; --pop: #261723;
+  --text: #f7ede6; --text-dim: #c6ada6; --text-faint: #8e7672;
+  --line: rgba(247,200,170,.12); --line-2: rgba(247,200,170,.23); --hover: rgba(247,200,170,.07);
+  --accent: #f2a950; --accent-2: #e8818f;
+  --accent-soft: rgba(242,169,80,.15); --accent-glow: rgba(242,169,80,.45);
+  --on-accent: #1c0f06;
+  --scroll: rgba(247,200,170,.18); --scroll-hi: rgba(247,200,170,.34);
+  --drop-tint: rgba(242,169,80,.07);
+  --glass-board: rgba(21,12,20,.34); --glass-card: rgba(26,14,24,.46); --glass-side: rgba(20,11,19,.74);
+  --glass-note: rgba(45,27,41,.86); --glass-note-hi: rgba(57,35,53,.92);
+}
+body[data-bg="dunes"]::before {
+  background: linear-gradient(#1a1030 0%, #45214a 34%, #b05a52 62%, #150c14 100%);
+}
+
+/* ---------- the glass, for both ---------- */
+/* The whole board is tinted a little, and the columns a little more on top
+   of that. Tinting only the columns left the gaps between them showing the
+   picture at full strength — thin bright seams, and where the sun fell
+   between two columns, a hard stripe of it. */
+body.landscape.polish #board-wrap { background: var(--glass-board); }
+body.landscape.polish .list { background: var(--glass-card); }
+body.landscape.polish:not(.phone) .panel.open,
+body.landscape.polish:not(.phone) .today-dock.open { background: var(--glass-side); }
+/* notes on the board and in Do Today are tinted, but only just */
+body.landscape.polish #board,
+body.landscape.polish:not(.phone) .today-dock {
+  --note: var(--glass-note);
+  --note-hi: var(--glass-note-hi);
+}
+/* A column's name sits straight on the glass, over whatever part of the
+   sky is behind it — the sun included. A soft shadow keeps it legible
+   there without dimming the glass for everything else. Set once, and
+   never animated. */
+body.landscape.polish .list-title,
+body.landscape.polish .list-count,
+
+body.landscape.polish .today-head,
+body.landscape.polish .brand-name { text-shadow: 0 1px 3px rgba(0,0,0,.55); }
+
+/* "Hold it still": every animation stops, which would leave all three
+   skies showing at once and the night's stars and moon out at dusk. So a
+   held landscape settles on its first sky, lit, with the night put away. */
+#fx-scene.still .lk-sky-l ~ .lk-sky-l,
+#fx-scene.still .lk-x-night { opacity: 0; }

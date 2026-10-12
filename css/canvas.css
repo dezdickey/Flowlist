@@ -1,0 +1,305 @@
+/* ============================================================
+   Flowlist — Canvas
+   ============================================================ */
+
+#canvas-wrap {
+  flex: 1 1 auto; min-width: 0; position: relative;
+  display: flex; flex-direction: column;
+}
+
+/* ---------- viewport ---------- */
+.cviewport {
+  flex: 1 1 auto; min-height: 0; position: relative;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  background: var(--bg);
+}
+.cviewport.grid {
+  background-image: radial-gradient(circle, var(--line-2) 1px, transparent 1.2px);
+  background-size: var(--grid-size, 34px) var(--grid-size, 34px);
+  background-position: var(--grid-x, 0) var(--grid-y, 0);
+}
+.cviewport[data-tool="pen"]   { cursor: crosshair; }
+.cviewport[data-tool="arrow"] { cursor: crosshair; }
+.cviewport[data-tool="erase"] { cursor: cell; }
+/* a drag of the canvas beats every tool cursor, including a middle-button one */
+.cviewport.panning, .cviewport.panning[data-tool] { cursor: grabbing; }
+
+.cworld {
+  position: absolute; top: 0; left: 0;
+  width: 0; height: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.csvg {
+  position: absolute; left: -50000px; top: -50000px;
+  width: 100000px; height: 100000px;
+  overflow: visible; pointer-events: none;
+}
+.csvg > g { transform: translate(50000px, 50000px); }
+.cstroke, .cedge { pointer-events: stroke; }
+.cviewport[data-tool="erase"] .cstroke:hover,
+.cviewport[data-tool="erase"] .cedge:hover,
+.cviewport[data-tool="sweep"] .cstroke:hover,
+.cviewport[data-tool="sweep"] .cedge:hover { stroke: var(--danger); opacity: .8; }
+
+/* the brush, which stands in for the pointer while it is in hand */
+.cviewport[data-tool="sweep"] { cursor: none; }
+#sweep-ring {
+  position: absolute; z-index: 6; display: none;
+  width: 22px; height: 22px; margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  border: 1.5px solid var(--danger);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  pointer-events: none;
+}
+.cviewport[data-tool="sweep"] #sweep-ring.on { display: block; }
+.cviewport.sweeping #sweep-ring { background: color-mix(in srgb, var(--danger) 32%, transparent); }
+
+.cnodes { position: absolute; top: 0; left: 0; width: 0; height: 0; }
+
+/* ---------- cards ---------- */
+.cnode {
+  position: absolute;
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-left: 3px solid var(--c, var(--accent));
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  font-size: 13px;
+  cursor: grab;
+  user-select: none;
+  transition: box-shadow .16s, border-color .16s;
+}
+.cnode:hover { border-color: var(--accent); }
+.cnode.selected { box-shadow: 0 0 0 2px var(--accent), var(--shadow); }
+.cnode.dragging { cursor: grabbing; box-shadow: 0 18px 40px -12px rgba(0,0,0,.6); z-index: 5; }
+.cnode.link-target { box-shadow: 0 0 0 3px var(--accent-2), var(--shadow); border-color: var(--accent-2); }
+.cnode-missing { opacity: .5; font-style: italic; }
+
+.cn-head {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 11px; border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.cn-head b { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 650; }
+.cn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); flex: 0 0 auto; }
+.cn-count { font-size: 11px; color: var(--text-dim); }
+
+.cn-items { padding: 6px 7px 8px; display: flex; flex-direction: column; gap: 3px; }
+.cn-items.scrolls { overflow-y: auto; overscroll-behavior: contain; cursor: default; }
+.cn-items.scrolls::-webkit-scrollbar { width: 7px; }
+.cn-item-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1 1 auto; }
+.cn-item { cursor: grab; }
+.cn-item:active { cursor: grabbing; }
+.cn-item:hover { background: var(--note-hi); }
+.cn-item {
+  position: relative;
+  display: flex; align-items: flex-start; gap: 6px;
+  padding: 4px 20px 4px 7px; border-radius: 7px;
+  font-size: 12px; line-height: 1.35;
+  background: var(--note);
+}
+.cn-item.done { opacity: .45; text-decoration: line-through; }
+.cn-tick { flex: 0 0 auto; width: 9px; height: 9px; margin-top: 3px; border-radius: 3px; border: 1.4px solid var(--line-2); }
+.cn-item.done .cn-tick { background: var(--c); border-color: var(--c); }
+.cn-pop {
+  position: absolute; right: 3px; top: 3px;
+  width: 17px; height: 17px; padding: 0; border: 0; border-radius: 5px;
+  background: transparent; color: var(--text-faint);
+  display: grid; place-items: center; cursor: pointer; opacity: 0;
+  transition: opacity .15s, color .15s, background .15s;
+}
+.cn-pop .ic { width: 11px; height: 11px; }
+.cn-item:hover .cn-pop { opacity: 1; }
+.cn-pop:hover { color: var(--accent); background: var(--hover); }
+.cn-empty, .cn-more { font-size: 11px; color: var(--text-faint); padding: 3px 7px; }
+
+.cn-body { padding: 11px 12px 8px; font-size: 13px; line-height: 1.4; word-break: break-word; }
+.cn-body.done { opacity: .5; text-decoration: line-through; }
+.cn-foot {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 12px 10px; font-size: 10.5px; color: var(--text-faint);
+}
+.cn-time { margin-left: auto; color: var(--accent); font-weight: 600; }
+
+.cnode-note { background: color-mix(in srgb, var(--c) 15%, var(--card)); border-left-width: 3px; }
+.cn-grip {
+  height: 15px; border-radius: 9px 9px 0 0; cursor: grab;
+  background-image: radial-gradient(circle, var(--text-faint) 1px, transparent 1.1px);
+  background-size: 5px 5px; background-position: center;
+  opacity: .45; transition: opacity .15s;
+}
+.cn-grip:hover { opacity: .9; }
+.cnode.dragging .cn-grip { cursor: grabbing; }
+.cn-text {
+  width: 100%; min-height: 96px;
+  border: 0; background: transparent; color: var(--text);
+  font: inherit; font-size: 13px; line-height: 1.45;
+  padding: 11px 12px; resize: none; outline: none;
+  cursor: text;
+}
+.cn-text::placeholder { color: var(--text-faint); }
+
+/* connector nubs */
+.cn-port {
+  position: absolute; width: 11px; height: 11px; border-radius: 50%;
+  background: var(--card); border: 2px solid var(--accent);
+  opacity: 0; cursor: crosshair; transition: opacity .15s, transform .15s;
+}
+.cnode:hover .cn-port { opacity: 1; }
+.cn-port:hover { transform: scale(1.35); background: var(--accent); }
+.cn-port-t { top: -6px;  left: 50%; margin-left: -5.5px; }
+.cn-port-b { bottom: -6px; left: 50%; margin-left: -5.5px; }
+.cn-port-l { left: -6px;  top: 50%; margin-top: -5.5px; }
+.cn-port-r { right: -6px; top: 50%; margin-top: -5.5px; }
+
+/* ---------- toolbar ---------- */
+.ctoolbar {
+  flex: 0 0 auto;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  padding: 8px 12px;
+  background: var(--bar);
+  border-bottom: 1px solid var(--line);
+  /* no blur: see #topbar in css/base.css */
+  z-index: 5;
+}
+.ctool-group { display: flex; align-items: center; gap: 3px; }
+.ctool-sep { width: 1px; height: 22px; background: var(--line-2); margin: 0 4px; }
+
+.ctool {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 30px; min-width: 30px; padding: 0 7px;
+  border: 1px solid transparent; border-radius: 9px;
+  background: transparent; color: var(--text-dim);
+  cursor: pointer; font-size: 12px; font-weight: 500;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.ctool:hover { background: var(--hover); color: var(--text); }
+.ctool.on { background: var(--accent-soft); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.ctool.wide { padding: 0 10px; }
+.ctool.zoom-label { min-width: 48px; justify-content: center; font-variant-numeric: tabular-nums; font-size: 11.5px; }
+
+.cswatch {
+  width: 20px; height: 20px; border-radius: 6px; padding: 0;
+  border: 2px solid transparent; background: var(--c); cursor: pointer;
+  /* a faint ring, so black and white are still findable on any theme */
+  box-shadow: inset 0 0 0 1px rgba(128,128,128,.5);
+  transition: transform .14s;
+}
+.cswatch:hover { transform: scale(1.18); }
+/* the black-and-white swap, at the end of that row */
+.cswap { margin-left: 4px; width: 26px; min-width: 26px; height: 26px; padding: 0; }
+.cswap .ic { width: 16px; height: 16px; }
+.cswatch.on { border-color: var(--text); }
+
+.cwidth {
+  width: 26px; height: 26px; padding: 0; border: 1px solid transparent; border-radius: 8px;
+  background: transparent; cursor: pointer;
+  display: grid; place-items: center;
+  transition: background .15s, border-color .15s;
+}
+.cwidth:hover { background: var(--hover); }
+.cwidth.on { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.cwidth i { display: block; background: currentColor; border-radius: 99px; color: var(--text-dim); }
+.cwidth.on i { color: var(--accent); }
+
+/* ---------- hint ---------- */
+.canvas-hint {
+  position: absolute; left: 50%; bottom: 18px;
+  transform: translate(-50%, 12px);
+  padding: 7px 14px; border-radius: 10px;
+  background: var(--pop); border: 1px solid var(--line-2);
+  box-shadow: var(--shadow);
+  font-size: 11.5px; color: var(--text-dim);
+  opacity: 0; pointer-events: none; max-width: 78%;
+  transition: opacity .25s, transform .25s;
+}
+.canvas-hint.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ============================================================
+   DROP-TO-REMOVE — the open panels become a target mid-drag
+   ============================================================ */
+.drop-remove {
+  position: fixed; z-index: 65;
+  pointer-events: none;            /* hit testing is done on the panels themselves */
+  /* sits high rather than centred, so the card you are holding does not cover it */
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 15%;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border: 2px dashed color-mix(in srgb, var(--danger) 45%, transparent);
+  backdrop-filter: blur(2px);
+  opacity: 0; visibility: hidden;
+  transform: scale(.985);
+  transition: opacity .18s ease, transform .22s cubic-bezier(.2,.9,.25,1), visibility .18s,
+              background .16s, border-color .16s;
+}
+.drop-remove.show { opacity: 1; visibility: visible; transform: none; }
+.drop-remove.armed {
+  background: color-mix(in srgb, var(--danger) 26%, transparent);
+  border-color: var(--danger);
+  border-style: solid;
+}
+
+.dr-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  padding: 18px 16px; text-align: center;
+  transition: transform .22s cubic-bezier(.2,.9,.25,1);
+}
+.drop-remove.armed .dr-inner { transform: scale(1.07); }
+
+/* The delete target lives in the DOM all the time and is only shown mid-drag.
+   An animation on a hidden element still ticks every frame and keeps the whole
+   page awake, so it is stopped until the target is actually up. */
+.drop-remove:not(.show) .dr-icon { animation-play-state: paused; }
+.dr-icon {
+  width: 34px; height: 34px;
+  fill: none; stroke: var(--danger); stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--danger) 45%, transparent));
+  animation: dr-bob 1.6s ease-in-out infinite;
+}
+@keyframes dr-bob { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-3px);} }
+.drop-remove.armed .dr-icon { animation-duration: .7s; }
+
+.dr-label { font-size: 12.5px; font-weight: 700; color: var(--danger); max-width: 190px; line-height: 1.3; }
+.dr-sub { font-size: 10.5px; color: var(--text-dim); max-width: 180px; line-height: 1.35; }
+
+/* the card being let go over the target */
+.cnode.about-to-go { opacity: .55; box-shadow: 0 0 0 2px var(--danger); }
+
+/* ---------- panel rows ---------- */
+.cv-row .cat-swatch { height: 18px; }
+
+/* the rail marks which view you are actually looking at */
+.rail-btn.view-on { color: var(--accent); }
+.rail-btn.view-on::after {
+  content: ""; position: absolute; left: 4px; top: 50%;
+  width: 3px; height: 18px; margin-top: -9px; border-radius: 99px;
+  background: var(--accent);
+}
+#rail .rail-btn { position: relative; }
+
+@media (max-width: 900px) {
+  .ctoolbar { padding: 6px 8px; gap: 4px; }
+  .ctool.wide span { display: none; }
+}
+
+/* ---------- pasted pictures ---------- */
+/* No border: the width of the card is exactly the width the picture was
+   pasted at, so nothing is resampled to fit a frame. */
+.cnode-image {
+  border: 0; padding: 0; overflow: hidden;
+  line-height: 0;
+  background: var(--sunken);
+}
+.cnode-image:hover { box-shadow: 0 0 0 2px var(--accent), var(--shadow); }
+.cn-img {
+  display: block; width: 100%; height: auto;
+  user-select: none; -webkit-user-drag: none;
+}
+
+/* a pinch is a two-finger gesture, not a drag — no grab cursor while it runs */
+#canvas-viewport.pinching { cursor: default; }

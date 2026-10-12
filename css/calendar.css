@@ -1,0 +1,312 @@
+/* ============================================================
+   Flowlist — the calendar
+
+   A surface like the canvas: it takes the middle of the window and the
+   month fills it. Everything here is drawn from the theme's own variables,
+   so it follows whichever theme is on without a second palette.
+
+   The grid is six rows always, and each row shares the height evenly, so
+   paging through months never moves anything under the pointer.
+   ============================================================ */
+
+#calendar-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ---------- the bar across the top ---------- */
+.cal-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+.cal-bar h2 {
+  margin: 0;
+  min-width: 11ch;
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: .01em;
+  color: var(--text);
+}
+.cal-bar #cal-today { margin-left: auto; }
+
+/* ---------- month beside day ---------- */
+.cal-main {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+}
+
+.cal-grid {
+  min-height: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  /* the weekday strip, then six equal weeks */
+  grid-template-rows: auto repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  padding: 1px;
+  background: var(--line);
+}
+
+.cal-dow {
+  background: var(--panel);
+  padding: 6px 8px;
+  font-size: .72rem;
+  font-weight: 650;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+/* ---------- a day ---------- */
+.cal-cell {
+  background: var(--card);
+  padding: 4px 5px 5px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: pointer;
+  /* only colour and shadow move, so hovering a grid of 42 cells stays cheap */
+  transition: background .12s ease, box-shadow .12s ease;
+}
+.cal-cell:hover { background: color-mix(in srgb, var(--accent) 7%, var(--card)); }
+.cal-cell.away { background: color-mix(in srgb, var(--panel) 55%, var(--card)); }
+.cal-cell.away .cal-n { opacity: .4; }
+.cal-cell.past .cal-n { opacity: .55; }
+.cal-cell.today { background: color-mix(in srgb, var(--accent) 12%, var(--card)); }
+.cal-cell.picked { box-shadow: inset 0 0 0 2px var(--accent); }
+
+.cal-n {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  line-height: 1.1;
+  flex: 0 0 auto;
+}
+.cal-cell.today .cal-n {
+  color: var(--accent);
+  font-weight: 750;
+}
+
+.cal-cell-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+/* ---------- a note on a day ---------- */
+.cal-chip {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  min-width: 0;
+  padding: 2px 5px;
+  border-radius: 5px;
+  border-left: 3px solid var(--c, var(--accent));
+  background: color-mix(in srgb, var(--c, var(--accent)) 14%, transparent);
+  font-size: .74rem;
+  line-height: 1.25;
+  color: var(--text);
+}
+.cal-chip > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cal-chip .cal-at {
+  flex: 0 0 auto;
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--c, var(--accent));
+}
+.cal-chip.done { opacity: .5; }
+.cal-chip.done > span { text-decoration: line-through; }
+
+.cal-more {
+  font-size: .68rem;
+  color: var(--text-dim);
+  padding-left: 4px;
+}
+
+/* the drag engine marks the cell being hovered over */
+.cal-cell.dnd-over {
+  background: color-mix(in srgb, var(--accent) 22%, var(--card));
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* ---------- the day beside the month ---------- */
+.cal-day {
+  flex: 0 0 300px;
+  min-width: 0;
+  border-left: 1px solid var(--line);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.cal-day-head {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+.cal-day-head h3 {
+  margin: 0;
+  font-size: .95rem;
+  font-weight: 650;
+  color: var(--text);
+}
+.cal-day-sub {
+  font-size: .72rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.cal-day-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cal-empty {
+  margin: 0;
+  font-size: .82rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.cal-row {
+  border-left: 3px solid var(--c, var(--accent));
+  background: var(--card);
+  border-radius: 6px;
+  padding: 7px 9px;
+}
+.cal-row.done { opacity: .6; }
+.cal-row.done .cal-row-text { text-decoration: line-through; }
+.cal-row-text {
+  font-size: .85rem;
+  line-height: 1.35;
+  color: var(--text);
+  word-break: break-word;
+}
+.cal-row-where {
+  margin-top: 2px;
+  font-size: .7rem;
+  color: var(--text-dim);
+}
+.cal-row-off {
+  margin-top: 4px;
+  font-size: .72rem;
+  padding: 0;
+}
+
+/* ---------- when there is not room for everything ----------
+   The day column is the first thing to go: a month you can read matters
+   more than a day you could have tapped into anyway. It goes when the
+   window is narrow, and also when Do Today is up — that dock is already a
+   day in a column, and three columns across the middle leaves the month
+   too thin to read. */
+#calendar-wrap.tight .cal-day { display: none; }
+@media (max-width: 900px) {
+  .cal-day { display: none; }
+}
+@media (max-width: 620px) {
+  .cal-bar { padding: 8px 10px; }
+  .cal-bar h2 { font-size: .95rem; min-width: 0; }
+  .cal-chip { font-size: .68rem; padding: 1px 4px; }
+  .cal-chip .cal-at { display: none; }
+  .cal-dow { font-size: .62rem; padding: 4px 2px; }
+}
+
+/* ---------- writing one down, beside the month ---------- */
+.cal-row.can-edit { cursor: text; }
+.cal-row.can-edit:hover { background: color-mix(in srgb, var(--accent) 8%, var(--card)); }
+
+.cal-edit {
+  border-left: 3px solid var(--c, var(--accent));
+  background: var(--card);
+  border-radius: 6px;
+  padding: 8px 9px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.cal-edit-text,
+.cal-edit-detail,
+.cal-edit-time {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--sunken);
+  color: var(--text);
+  font: inherit;
+  padding: 6px 8px;
+}
+.cal-edit-text { font-weight: 600; }
+.cal-edit-detail { resize: vertical; min-height: 64px; line-height: 1.45; }
+.cal-edit-text:focus,
+.cal-edit-detail:focus,
+.cal-edit-time:focus { outline: none; border-color: var(--accent); }
+.cal-edit-text::placeholder,
+.cal-edit-detail::placeholder { color: var(--text-faint); }
+
+.cal-edit-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cal-edit-where {
+  margin-left: auto;
+  font-size: .7rem;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.btn-min {
+  border: 1px solid var(--line);
+  background: var(--pop);
+  color: var(--text);
+  border-radius: 5px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: .8rem;
+  cursor: pointer;
+}
+.btn-min:hover { background: var(--hover); border-color: var(--line-2); }
+.btn-min.danger { color: #ff8b8b; }
+.btn-min.danger:hover { border-color: #ff8b8b; }
+
+/* ---------- the editor, inside the day's own menu ----------
+   The context menu sizes itself to its items, so the editor sets a width
+   here rather than inheriting one. Wide enough for a line of text and a
+   few lines of detail, narrow enough to sit over a month grid. */
+.cal-menu-edit {
+  padding: 4px 8px 8px;
+  width: 300px;
+  max-width: calc(100vw - 32px);
+}
+.cal-menu-edit .cal-edit {
+  background: transparent;
+  border-left: 0;
+  padding: 0;
+  gap: 6px;
+}
+.cal-menu-edit .cal-edit-detail { min-height: 78px; }
+/* the note's category colour, kept as a stripe down the left of the fields */
+.cal-menu-edit .cal-edit-text { border-left: 3px solid var(--c, var(--accent)); }

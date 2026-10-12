@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "rooms": {
+      ".read": false,
+      ".write": false,
+      "$room": {
+        ".read": true,
+        ".write": "newData.exists()",
+        "rev": { ".validate": "newData.isNumber()" },
+        "at":  { ".validate": "newData.isNumber()" },
+        "enc": {
+          ".validate": "newData.hasChildren(['v', 'iv', 'data'])",
+          "v":    { ".validate": "newData.isNumber()" },
+          "iv":   { ".validate": "newData.isString() && newData.val().length < 64" },
+          "data": { ".validate": "newData.isString()" },
+          "$else": { ".validate": false }
+        },
+        ".validate": "newData.hasChildren(['rev', 'at', 'enc'])",
+        "$else": { ".validate": false }
+      }
+    }
+  }
+}
