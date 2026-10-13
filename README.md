@@ -7,9 +7,6 @@ an infinite **canvas** with cards and connectors. Plus saved **presets** that
 open a whole set of columns at once, a snap-in widget bar, and themes (including
 a winter one with snowfall, a snowman and a wandering cat).
 
-Rename it whenever you like — the name only appears in `index.html`'s `<title>`
-and the top-left brand.
-
 ![The board](screenshots/board.png)
 
 **No framework, no build step, no dependencies, no `package.json`.** Open
@@ -21,6 +18,66 @@ Sync between devices is **end-to-end encrypted**: the board is AES-GCM encrypted
 in the browser under a key derived from your passphrase, and the database only
 ever holds ciphertext. There is no recovery path and no plaintext fallback, by
 design — it refuses to send rather than send in the clear.
+
+## Security design
+
+What the sync and the storage are built to withstand, and what they are not.
+Each point is detailed further down; this is the short version.
+
+- **Encrypted before it leaves.** With a passphrase set, the board is encrypted
+  in the browser with AES-GCM (a 256-bit key from PBKDF2-SHA-256, 250,000
+  rounds) and a fresh random 12-byte nonce on every send, using the browser's
+  own `crypto.subtle` — no cryptography is bundled or invented here. The
+  database holds ciphertext plus two clear fields, a revision number and a
+  timestamp, so a device can tell which copy is newer without decrypting it.
+- **It fails closed.** If encryption fails, nothing is sent: the board stays on
+  the device, marked as waiting. If this device is locked and the room holds a
+  plain copy, it refuses rather than send the board back in the clear. Served
+  over plain `http` from another machine, where the browser withholds
+  `crypto.subtle`, it will not sync at all.
+- **The database refuses plain text too.** The rules in `firebase-rules.json`
+  accept a write only in the encrypted shape (`rev`, `at` and an `enc`
+  envelope), and refuse deletes and listing the rooms. With them deployed, an
+  unencrypted board cannot be stored even by a faulty client; the app says
+  *the database will only take a locked board* instead. The rules check the
+  shape of a write — they cannot prove its contents are really encrypted.
+- **No recovery path.** No reset, no escrow, no "forgot passphrase". Losing it
+  makes the synced copy unreadable to everyone. That is the point.
+- **The key can live on a USB stick.** A profile can be sealed so its board is
+  encrypted at rest on the laptop under a random data key. That key is stored
+  twice — wrapped by a 32-byte key file on a removable drive, and by a backup
+  passphrase (PBKDF2, 1.2 million rounds; weak ones are refused). Take the
+  stick away and the laptop holds only ciphertext. This is how the data is made
+  unrecoverable on an SSD, where overwriting cannot be trusted: the secret is
+  never written to the drive. For a sealed board, the undo history and sync's
+  last-agreed copy are kept in memory only, because plain copies beside a
+  sealed board would defeat it.
+- **Offline edits merge instead of overwriting.** When two devices both changed,
+  a three-way merge against the last version they agreed on keeps both sides'
+  additions and never silently undoes a deletion. It is a pure function with
+  its own suites (`mergetest`, `mergenotetest`); `locktest`, `refusetest` and
+  `keyfiletest` cover the encryption, the refusals and the key file.
+
+### What it does not protect against
+
+- **A compromised device.** Malware, a malicious browser extension or anyone
+  at the unlocked browser sees the board in the clear. Encryption protects it
+  on the wire and in the database, not on a machine that is already someone
+  else's.
+- **Other pages opened from disk.** Run from `index.html`, the board lives in
+  `localStorage` for `file://`, which Chrome shares with other local HTML files
+  opened in the same browser profile. Unless the profile is sealed, any of them
+  could read it.
+- **A weak passphrase.** Anyone who knows the room can download the ciphertext
+  and guess offline. The PBKDF2 rounds make each guess slow, not impossible.
+  Where the room itself is derived from a single password, that password is
+  the only secret, so it has to be a real one.
+- **Metadata.** The revision number, the time of the last change and the size
+  of the ciphertext are visible: an onlooker learns that a board exists and
+  roughly how often it changes, and nothing else.
+- **Vandalism.** Without the passphrase nobody can read the room, but anyone
+  who knows it can overwrite it with junk. The rules stop deletion, not that.
+  Every device keeps its own full copy, and **Export a backup** still works.
 
 
 ## On a phone
@@ -141,8 +198,9 @@ room nobody can guess is what keeps your board yours. That is why the key is
 generated rather than invented, and why it is long. It is the same bargain as
 the ntfy topic.
 
-The board itself sits on Google's servers, unencrypted. If that is not
-something you want, **Export a backup** is still there and still works.
+With the rules above deployed, the board only ever reaches the database
+encrypted: a device without a passphrase is refused until it is given one.
+See **Locking it before it leaves**.
 
 ### How two devices agree
 
@@ -277,9 +335,10 @@ so. Pictures are the only thing here big enough to do that.
 
 ### Locking it before it leaves
 
-By default the room holds your board as plain readable JSON. Whoever runs the
-database can read it. With a passphrase set, the board is encrypted on this
-device and only the ciphertext is sent — the database stores bytes it cannot
+Without a passphrase the app would send the board as plain readable JSON,
+which anyone running the database could read — so the rules above refuse it,
+and a passphrase is needed before anything is stored. With one set, the board
+is encrypted on this device and only the ciphertext is sent — the database stores bytes it cannot
 open, and the passphrase never leaves the machines you type it into.
 
 `Appearance → Sync → Passphrase`. Type the same one on every device that shares
